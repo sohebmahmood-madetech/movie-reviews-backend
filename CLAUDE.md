@@ -141,7 +141,20 @@ The expected JSON output (roughly) for failure case is:
 }
 ```
 
-The endpoint should return a `success` field returning true or false if the token is valid, nothing more and nothing less. Ensure that this endpoint is rate-limited.
+### User login
+
+A `POST` endpoint at `/v1/auth/login` needs to be created, and the following needs to be submitted (in JSON format):
+
+- Username or Email address: String 
+- Password: String
+
+It should then return a JWT token in JSON upon successful authentication and a 200 OK HTTP Status code.
+
+If the username/email doesn't exist, password is incorrect, or the user has `rejected=true`, return 401 Unauthorized status code and return a descriptive error code in JSON.
+
+If there are any other errors, return 500 Internal Server error with a descriptive error in JSON.
+
+The expected JSON output format should match the signup endpoint (success/results/error structure).
 
 ## Tech Stack
 - Language: Java 24
