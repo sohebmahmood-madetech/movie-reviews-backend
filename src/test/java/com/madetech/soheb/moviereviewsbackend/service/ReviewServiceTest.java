@@ -128,14 +128,14 @@ class ReviewServiceTest {
         List<Review> reviews = Arrays.asList(review1, review2);
 
         when(movieService.movieExists(movieId)).thenReturn(true);
-        when(reviewRepository.findByMovieId(movieId)).thenReturn(reviews);
+        when(reviewRepository.findByMovieIdOrderByTimestampDesc(movieId)).thenReturn(reviews);
 
         List<Review> result = reviewService.getReviewsForMovie(movieId);
 
         assertEquals(2, result.size());
         assertEquals(8, result.get(0).getRating());
         assertEquals(6, result.get(1).getRating());
-        verify(reviewRepository).findByMovieId(movieId);
+        verify(reviewRepository).findByMovieIdOrderByTimestampDesc(movieId);
     }
 
     @Test
@@ -148,7 +148,7 @@ class ReviewServiceTest {
         List<Review> result = reviewService.getReviewsForMovie(movieId);
 
         assertTrue(result.isEmpty());
-        verify(reviewRepository, never()).findByMovieId(movieId);
+        verify(reviewRepository, never()).findByMovieIdOrderByTimestampDesc(movieId);
     }
 
     @Test
@@ -169,14 +169,14 @@ class ReviewServiceTest {
         review2.setTimestamp(LocalDateTime.now());
 
         List<Review> reviews = Arrays.asList(review1, review2);
-        when(reviewRepository.findByUserId(userId)).thenReturn(reviews);
+        when(reviewRepository.findByUserIdOrderByTimestampDesc(userId)).thenReturn(reviews);
 
         List<Review> result = reviewService.getReviewsByUser(userId);
 
         assertEquals(2, result.size());
         assertEquals(9, result.get(0).getRating());
         assertEquals(7, result.get(1).getRating());
-        verify(reviewRepository).findByUserId(userId);
+        verify(reviewRepository).findByUserIdOrderByTimestampDesc(userId);
     }
 
     @Test

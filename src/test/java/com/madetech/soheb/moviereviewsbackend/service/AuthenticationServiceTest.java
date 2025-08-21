@@ -37,6 +37,9 @@ class AuthenticationServiceTest {
     @Mock
     private Resource resource;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     private AuthenticationService authenticationService;
 
     private final String testJwtPrivateKey = "testPrivateKeyForJWTSigning123456789012345678901234567890";
@@ -56,7 +59,7 @@ class AuthenticationServiceTest {
         when(resourceLoader.getResource("classpath:auth.json")).thenReturn(resource);
         when(resource.getInputStream()).thenReturn(new ByteArrayInputStream(authJsonContent.getBytes()));
 
-        authenticationService = new AuthenticationService(userRepository, resourceLoader, testJwtPrivateKey);
+        authenticationService = new AuthenticationService(userRepository, resourceLoader, testJwtPrivateKey, passwordEncoder);
     }
 
     @Test
@@ -70,6 +73,7 @@ class AuthenticationServiceTest {
 
         when(userRepository.existsByUsername("testuser")).thenReturn(false);
         when(userRepository.existsByEmail("test@example.com")).thenReturn(false);
+        when(passwordEncoder.encode("password123")).thenReturn("hashedPassword123");
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Optional<User> result = authenticationService.registerUser(request);
@@ -123,20 +127,23 @@ class AuthenticationServiceTest {
         request.setUsernameOrEmail("testuser");
         request.setPassword("password123");
 
+        String encodedPassword = "hashedPassword";
+
         User user = new User();
         user.setId(UUID.randomUUID());
         user.setUsername("testuser");
         user.setEmail("test@example.com");
-        user.setPasswordHash("hashedPassword");
+        user.setPasswordHash(encodedPassword);
         user.setRejected(false);
         user.setCreatedAt(LocalDateTime.now());
 
         when(userRepository.findByUsernameOrEmail("testuser")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("password123", "hashedPassword")).thenReturn(true);
 
         Optional<User> result = authenticationService.authenticateUser(request);
 
         assertTrue(result.isPresent());
-        assertEquals(user.getUsername(), result.get().getUsername());
+        assertEquals("testuser", result.get().getUsername());
     }
 
     @Test

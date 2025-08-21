@@ -8,6 +8,7 @@ import com.madetech.soheb.moviereviewsbackend.repository.MovieRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,6 +37,7 @@ public class MovieService {
                     movie.setProducers(request.getProducers());
                     movie.setReleaseYear(request.getReleaseYear());
                     movie.setAgeRating(request.getAgeRating());
+                    movie.setCreatedAt(LocalDateTime.now());
 
                     return Optional.of(movieRepository.save(movie));
                 },

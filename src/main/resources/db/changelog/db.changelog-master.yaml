@@ -157,3 +157,143 @@ databaseChangeLog:
             referencedTableName: users
             referencedColumnNames: id
             constraintName: fk_reviews_user_id
+            
+  - changeSet:
+      id: 4
+      author: claude
+      changes:
+        - createTable:
+            tableName: movie_genres
+            columns:
+              - column:
+                  name: movie_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: genre
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: movie_genres
+            baseColumnNames: movie_id
+            referencedTableName: movies
+            referencedColumnNames: id
+            constraintName: fk_movie_genres_movie_id
+            
+  - changeSet:
+      id: 5
+      author: claude
+      changes:
+        - createTable:
+            tableName: movie_directors
+            columns:
+              - column:
+                  name: movie_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: director
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: movie_directors
+            baseColumnNames: movie_id
+            referencedTableName: movies
+            referencedColumnNames: id
+            constraintName: fk_movie_directors_movie_id
+            
+  - changeSet:
+      id: 6
+      author: claude
+      changes:
+        - createTable:
+            tableName: movie_writers
+            columns:
+              - column:
+                  name: movie_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: writer
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: movie_writers
+            baseColumnNames: movie_id
+            referencedTableName: movies
+            referencedColumnNames: id
+            constraintName: fk_movie_writers_movie_id
+            
+  - changeSet:
+      id: 7
+      author: claude
+      changes:
+        - createTable:
+            tableName: movie_cast
+            columns:
+              - column:
+                  name: movie_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cast_member
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: movie_cast
+            baseColumnNames: movie_id
+            referencedTableName: movies
+            referencedColumnNames: id
+            constraintName: fk_movie_cast_movie_id
+            
+  - changeSet:
+      id: 8
+      author: claude
+      changes:
+        - createTable:
+            tableName: movie_producers
+            columns:
+              - column:
+                  name: movie_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: producer
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: movie_producers
+            baseColumnNames: movie_id
+            referencedTableName: movies
+            referencedColumnNames: id
+            constraintName: fk_movie_producers_movie_id
+            
+  - changeSet:
+      id: 9
+      author: claude
+      changes:
+        - dropColumn:
+            tableName: movies
+            columnName: genres
+        - dropColumn:
+            tableName: movies
+            columnName: directors
+        - dropColumn:
+            tableName: movies
+            columnName: writers
+        - dropColumn:
+            tableName: movies
+            columnName: cast
+        - dropColumn:
+            tableName: movies
+            columnName: producers

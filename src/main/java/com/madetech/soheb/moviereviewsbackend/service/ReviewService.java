@@ -57,7 +57,7 @@ public class ReviewService {
                     if (!movieService.movieExists(movieId)) {
                         return List.<Review>of();
                     }
-                    return reviewRepository.findByMovieId(movieId);
+                    return reviewRepository.findByMovieIdOrderByTimestampDesc(movieId);
                 },
                 "ERR_REVIEWS_RETRIEVAL_FAILED: Failed to retrieve reviews for movie"
         );
@@ -65,7 +65,7 @@ public class ReviewService {
 
     public List<Review> getReviewsByUser(UUID userId) {
         return executeWithErrorHandling(
-                () -> reviewRepository.findByUserId(userId),
+                () -> reviewRepository.findByUserIdOrderByTimestampDesc(userId),
                 "ERR_USER_REVIEWS_RETRIEVAL_FAILED: Failed to retrieve reviews by user"
         );
     }

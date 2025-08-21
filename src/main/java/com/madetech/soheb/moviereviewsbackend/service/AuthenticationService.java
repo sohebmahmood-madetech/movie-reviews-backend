@@ -47,6 +47,19 @@ public class AuthenticationService {
         this.filmAuthTokens = loadFilmAuthTokens();
     }
 
+    public AuthenticationService(
+            UserRepository userRepository,
+            ResourceLoader resourceLoader,
+            String jwtPrivateKey,
+            PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.resourceLoader = resourceLoader;
+        this.jwtSigningKey = Keys.hmacShaKeyFor(jwtPrivateKey.getBytes(StandardCharsets.UTF_8));
+        this.objectMapper = new ObjectMapper();
+        this.filmAuthTokens = loadFilmAuthTokens();
+    }
+
     public Optional<User> registerUser(UserRegistrationRequest request) {
         try {
             if (userRepository.existsByUsername(request.getUsername())) {
@@ -64,6 +77,7 @@ public class AuthenticationService {
             user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
             user.setDateOfBirth(request.getDateOfBirth());
             user.setRejected(false);
+            user.setCreatedAt(LocalDateTime.now());
 
             return Optional.of(userRepository.save(user));
         } catch (Exception e) {

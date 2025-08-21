@@ -1,5 +1,6 @@
 package com.madetech.soheb.moviereviewsbackend.data;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,19 +10,51 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "movies")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Movie {
+    @Id
     private UUID id;
+    
+    @Column(nullable = false, length = 100)
     private String name;
+    
+    @ElementCollection
+    @CollectionTable(name = "movie_genres", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "genre", length = 20)
     private List<String> genres;
+    
+    @ElementCollection
+    @CollectionTable(name = "movie_directors", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "director", length = 100)
     private List<String> directors;
+    
+    @ElementCollection
+    @CollectionTable(name = "movie_writers", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "writer", length = 100)
     private List<String> writers;
+    
+    @ElementCollection
+    @CollectionTable(name = "movie_cast", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "cast_member", length = 100)
     private List<String> cast;
+    
+    @ElementCollection
+    @CollectionTable(name = "movie_producers", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "producer", length = 100)
     private List<String> producers;
+    
+    @Column(name = "release_year", nullable = false)
     private Integer releaseYear;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "age_rating", nullable = false)
     private AgeRating ageRating;
+    
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @Override

@@ -1,5 +1,6 @@
 package com.madetech.soheb.moviereviewsbackend.data;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,16 +10,31 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+    @Id
     private UUID id;
+    
+    @Column(unique = true, nullable = false, length = 100)
     private String username;
+    
+    @Column(unique = true, nullable = false, length = 100)
     private String email;
+    
+    @Column(name = "password_hash", nullable = false, length = 256)
     private String passwordHash;
+    
+    @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
-    private boolean rejected;
+    
+    @Column(nullable = false)
+    private boolean rejected = false;
+    
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @Override
