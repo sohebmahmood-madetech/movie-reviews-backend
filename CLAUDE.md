@@ -10,17 +10,15 @@ The project needs to have two distinct roles:
 
 ### Authentication
 
-Authentication should be done through JWT. Use the `RS512` algorithm. The private key will be passed in through the spring properties:
+Authentication should be done through JWT for submitting movie reviews, and a simple token lookup for movie submission. Use the `RS512` algorithm. The private key will be passed in through the spring properties:
 
-- `moviereviews.auth.film.privatekey`
 - `moviereviews.auth.review.privatekey`
 
 The public key (if needed) will be passed in through the spring properties:
 
-- `moviereviews.auth.film.publickey`
 - `moviereviews.auth.review.publickey`
 
-Use these values where necessary for JWT.
+Use these values where necessary for JWT. The expiry date for JWT is 30 days.
 
 #### Film submission authentication
 
@@ -48,19 +46,23 @@ When authenticating against a provided token, the code should look through the `
 
 Users who are submitting reviews of a film will need to sign up via an endpoint in the backend. To sign up, a user needs to pass in the following details:
 
-- Username (max 100 characters)
-- Email address (max 100 characters)
-- Password (max 256 characters)
-- Date of Birth (ISO 8601 date format, do not collect any time based information)
+- ID: UUIDv7
+- Username: String (max 100 characters)
+- Email address: String (max 100 characters)
+- Password: String (max 256 characters)
+- Date of Birth: LocalDate or equivalent (ISO 8601 date format, do not collect any time based information)
 
 Password hashing should be done using Argon2id or scrypt if Argon2id is not available. Usernames should be unique, but shouldn't be the main ID when stored in the database as the user may wish to change it in the future, and we may wish to implement that functionality in the future. Same with email addresses - they must be unique, but a user may wish to change their email address in the future (we will not concern ourselves with the implementation detail as of now).
 
 The user ID should be a UUIDv7 value. You can geenrate this via the `UuidCreator.getTimeOrderedEpoch()` API.
 
+In the database, include a boolean field called `rejected` that is by default set to false, but can be set true by anyone who has access to the database.
+
 ### Submitting a film
 
 A `POST` endpoint at `/v1/movies/submit` needs to be created, and the following needs to be provided (in JSON format):
 
+- ID: UUIDv7
 - Movie name: String (no more than 100 characters)
 - Genres: Array<String> (no more than 20 characters **each**)
 - Directors: Array<String> (no more than 100 characters **each**)
@@ -73,16 +75,25 @@ A `POST` endpoint at `/v1/movies/submit` needs to be created, and the following 
 Return:
 - 200 OK if successful
 - 400 Bad Request if the data is not in the right structure or fails validation 
+- 401 Unauthorised if the user isn't valid (the user token must be submitted via the X-API-AUTH header, and only users in `auth.json` are valid users who can access this API)
 - 500 Internal Server Error if we have failed processing
 
 ### Submitting a review
 
 A `POST` endpoint at `/v1/movies/{movie_id}/review/submit` needs to be created, and the following needs to be provided (in JSON format):
 
-- Rating (from 0 to 10)
-- Description (text - max 500 characters)
+- ID: UUIDv7
+- Rating (from 0 to 10): Integer
+- Description: String - max 500 characters
+- Timestamp: LocalDateTime (ISO 8601 format)
 
 The user must be authenticated with their JWT token in order to submit. The `movie_id` is the movie ID for the movie being reviewed
+
+Return:
+- 200 OK if successful
+- 400 Bad Request if the data is not in the right structure or fails validation
+- 401 Unauthorised if the user isn't valid (the user token must be submitted via the X-API-AUTH header, and only users registered in the database and where the `rejected==false` can access this API)
+- 500 Internal Server Error if we have failed processing
 
 ### Getting movies
 
@@ -90,7 +101,47 @@ A `GET` endpoint at `/v1/movies` needs to be created, and should return the list
 
 ### Getting movie reviews
 
-A `GET` endpoint at `/v1/movies` needs to be created, and should return the list of reviews for  in the database in JSON format
+A `GET` endpoint at `/v1/movies/{movie_id}/reviews` needs to be created, and should return the list of reviews for  in the database in JSON format
+
+### User registering
+
+A `POST` endpoint at `/v1/auth/signup` needs to be created, and the following needs to be submitted (in JSON format):
+
+- Username: String (max 100 characters)
+- Email address: String (max 100 characters)
+- Password: String (max 256 characters)
+- Date of Birth: LocalDate or equivalent (ISO 8601 date format, do not collect any time based information)
+
+It should then return a JWT token in JSON upon successful registration and a 200 OK HTTP Status code.
+
+If the username or email address already exists in the database, return 400 Bad Request status code and return a descriptive error code in JSON.
+
+If there are any other errors, return 500 Internal Server error with a descriptive error in JSON.
+
+The expected JSON output (roughly) for success case is:
+
+```json
+{
+  "success": true,
+  "results": "<JWT>",
+  "error": null
+}
+```
+
+The expected JSON output (roughly) for failure case is:
+
+```json
+{
+  "success": false,
+  "results": null,
+  "error": {
+    "code": "some made up numerical code as a long",
+    "message": "english message that represents the error without giving away the underlying code and objects"
+  }
+}
+```
+
+The endpoint should return a `success` field returning true or false if the token is valid, nothing more and nothing less. Ensure that this endpoint is rate-limited.
 
 ## Tech Stack
 - Language: Java 24
