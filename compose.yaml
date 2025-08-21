@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=moviereview'
+      - 'POSTGRES_PASSWORD=bS9fufsp3fNv28pypeyxKuWnRFTzbCecDU85VZCX3R3JUNqBDCyv9f59gdmz5qnd'
+      - 'POSTGRES_USER=mr_yhls815rpv'
+    ports:
+      - '5432'
