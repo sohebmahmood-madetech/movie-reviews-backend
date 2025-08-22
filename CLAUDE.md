@@ -170,6 +170,9 @@ The aim is that this should be used by both automated scripts and a frontend fra
     - `/config` - Where Spring Boot configuration and bean production declaration (i.e. any method annotated with `@Bean`) lives
     - `/controller` - Where code for REST controllers are declared
     - `/data` - Where database entities/Java POJO classes live
+      - `/database` - where database specific classes live
+      - `/controller` - where controller specific classes live
+      -  `/exceptions` - where exception classes live
     - `/repository` - Spring Boot repository code lives here - should use the classes in `/data` to fetch data from the database
     - `/service` - Services classes (i.e. classes annotated with `@Service`). 
   - `/resources` - Application resources
