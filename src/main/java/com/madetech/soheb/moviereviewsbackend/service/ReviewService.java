@@ -1,6 +1,7 @@
 package com.madetech.soheb.moviereviewsbackend.service;
 
 import com.github.f4b6a3.uuid.UuidCreator;
+import com.madetech.soheb.moviereviewsbackend.data.database.Movie;
 import com.madetech.soheb.moviereviewsbackend.data.database.Review;
 import com.madetech.soheb.moviereviewsbackend.data.exceptions.ReviewServiceException;
 import com.madetech.soheb.moviereviewsbackend.data.controller.ReviewSubmissionRequest;
@@ -39,7 +40,7 @@ public class ReviewService {
                     }
 
                     // Get the movie entity for proper relationship
-                    Optional<com.madetech.soheb.moviereviewsbackend.data.database.Movie> movieOpt = movieService.findMovieById(movieId);
+                    Optional<Movie> movieOpt = movieService.findMovieById(movieId);
                     if (movieOpt.isEmpty()) {
                         return Optional.<Review>empty();
                     }
