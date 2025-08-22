@@ -35,12 +35,13 @@ public class UserRegistrationRequest {
         UserRegistrationRequest that = (UserRegistrationRequest) o;
         return Objects.equals(username, that.username) &&
                 Objects.equals(email, that.email) &&
-                Objects.equals(password, that.password) &&
                 Objects.equals(dateOfBirth, that.dateOfBirth);
+        // Note: Password deliberately excluded from equals/hashCode for security reasons
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, email, password, dateOfBirth);
+        return Objects.hash(username, email, dateOfBirth);
+        // Note: Password deliberately excluded from equals/hashCode for security reasons
     }
 }

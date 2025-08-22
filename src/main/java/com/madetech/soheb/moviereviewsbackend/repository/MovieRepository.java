@@ -17,7 +17,7 @@ public interface MovieRepository extends JpaRepository<Movie, UUID> {
             m.id, m.name, m.genres, m.directors, m.writers, m.cast, m.producers, 
             m.releaseYear, m.ageRating, m.createdAt, AVG(CAST(r.rating AS double))
         )
-        FROM Movie m LEFT JOIN Review r ON m.id = r.movieId
+        FROM Movie m LEFT JOIN Review r ON m.id = r.movie.id
         GROUP BY m.id, m.name, m.genres, m.directors, m.writers, m.cast, m.producers, 
                  m.releaseYear, m.ageRating, m.createdAt
         ORDER BY m.createdAt DESC

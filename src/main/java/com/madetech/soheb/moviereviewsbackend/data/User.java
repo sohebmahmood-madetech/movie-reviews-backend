@@ -1,6 +1,7 @@
 package com.madetech.soheb.moviereviewsbackend.data;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,24 +18,35 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User {
     @Id
+    @NotNull
     private UUID id;
     
     @Column(unique = true, nullable = false, length = 100)
+    @NotBlank
+    @Size(max = 100)
     private String username;
     
     @Column(unique = true, nullable = false, length = 100)
+    @NotBlank
+    @Email
+    @Size(max = 100)
     private String email;
     
     @Column(name = "password_hash", nullable = false, length = 256)
+    @NotBlank
+    @Size(max = 256)
     private String passwordHash;
     
     @Column(name = "date_of_birth", nullable = false)
+    @NotNull
+    @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
     
     @Column(nullable = false)
     private boolean rejected = false;
     
     @Column(name = "created_at", nullable = false)
+    @NotNull
     private LocalDateTime createdAt;
 
     @Override

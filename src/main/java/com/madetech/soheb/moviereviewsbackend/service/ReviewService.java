@@ -2,6 +2,7 @@ package com.madetech.soheb.moviereviewsbackend.service;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import com.madetech.soheb.moviereviewsbackend.data.Review;
+import com.madetech.soheb.moviereviewsbackend.data.ReviewServiceException;
 import com.madetech.soheb.moviereviewsbackend.data.ReviewSubmissionRequest;
 import com.madetech.soheb.moviereviewsbackend.data.User;
 import com.madetech.soheb.moviereviewsbackend.repository.ReviewRepository;
@@ -37,10 +38,16 @@ public class ReviewService {
                         return Optional.<Review>empty();
                     }
 
+                    // Get the movie entity for proper relationship
+                    Optional<com.madetech.soheb.moviereviewsbackend.data.Movie> movieOpt = movieService.findMovieById(movieId);
+                    if (movieOpt.isEmpty()) {
+                        return Optional.<Review>empty();
+                    }
+
                     Review review = new Review();
                     review.setId(UuidCreator.getTimeOrderedEpoch());
-                    review.setMovieId(movieId);
-                    review.setUserId(user.getId());
+                    review.setMovie(movieOpt.get());
+                    review.setUser(user);
                     review.setRating(request.getRating());
                     review.setDescription(request.getDescription());
                     review.setTimestamp(LocalDateTime.now());
@@ -75,7 +82,8 @@ public class ReviewService {
             return operation.get();
         } catch (Exception e) {
             log.error(errorMessage, e);
-            throw new RuntimeException(errorMessage.split(":")[0]);
+            String errorCode = errorMessage.split(":")[0];
+            throw new ReviewServiceException(errorCode, errorCode.replace("ERR_", "").replace("_", " ").toLowerCase(), e);
         }
     }
 }
