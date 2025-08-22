@@ -4,6 +4,7 @@ import com.madetech.soheb.moviereviewsbackend.data.database.Movie;
 import com.madetech.soheb.moviereviewsbackend.data.database.Review;
 import com.madetech.soheb.moviereviewsbackend.data.controller.ReviewSubmissionRequest;
 import com.madetech.soheb.moviereviewsbackend.data.database.User;
+import com.madetech.soheb.moviereviewsbackend.data.exceptions.ReviewServiceException;
 import com.madetech.soheb.moviereviewsbackend.repository.ReviewRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,19 +49,24 @@ class ReviewServiceTest {
         user.setId(userId);
         user.setUsername("testuser");
         
+        Movie movie = new Movie();
+        movie.setId(movieId);
+        movie.setName("Test Movie");
+        
         ReviewSubmissionRequest request = new ReviewSubmissionRequest();
         request.setRating(8);
         request.setDescription("Great movie!");
 
         when(movieService.movieExists(movieId)).thenReturn(true);
+        when(movieService.findMovieById(movieId)).thenReturn(Optional.of(movie));
         when(reviewRepository.existsByUserIdAndMovieId(userId, movieId)).thenReturn(false);
         when(reviewRepository.save(any(Review.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Optional<Review> result = reviewService.submitReview(movieId, request, user);
 
         assertTrue(result.isPresent());
-        assertEquals(movieId, result.get().getMovieId());
-        assertEquals(userId, result.get().getUserId());
+        assertEquals(movie, result.get().getMovie());
+        assertEquals(user, result.get().getUser());
         assertEquals(8, result.get().getRating());
         assertEquals("Great movie!", result.get().getDescription());
         verify(reviewRepository).save(any(Review.class));
@@ -190,21 +196,30 @@ class ReviewServiceTest {
 
     @Test
     @Timeout(5)
-    void submitReview_RepositoryThrowsException_ThrowsRuntimeException() {
+    void submitReview_RepositoryThrowsException_ThrowsReviewServiceException() {
         UUID movieId = UUID.randomUUID();
         UUID userId = UUID.randomUUID();
         
         User user = new User();
         user.setId(userId);
         
+        Movie movie = new Movie();
+        movie.setId(movieId);
+        movie.setName("Test Movie");
+        
         ReviewSubmissionRequest request = new ReviewSubmissionRequest();
         request.setRating(8);
         request.setDescription("Great movie!");
 
         when(movieService.movieExists(movieId)).thenReturn(true);
+        when(movieService.findMovieById(movieId)).thenReturn(Optional.of(movie));
         when(reviewRepository.existsByUserIdAndMovieId(userId, movieId)).thenReturn(false);
         when(reviewRepository.save(any(Review.class))).thenThrow(new RuntimeException("Database error"));
 
-        assertThrows(RuntimeException.class, () -> reviewService.submitReview(movieId, request, user));
+        ReviewServiceException exception = 
+            assertThrows(ReviewServiceException.class, 
+                        () -> reviewService.submitReview(movieId, request, user));
+        
+        assertEquals("ERR_REVIEW_SUBMISSION_FAILED", exception.getErrorCode());
     }
 }

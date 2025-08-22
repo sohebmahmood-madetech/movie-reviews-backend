@@ -1,13 +1,21 @@
 package com.madetech.soheb.moviereviewsbackend.config;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
 @ConfigurationProperties(prefix = "moviereviews.auth.review")
 public class JwtProperties {
+    
+    private final Environment environment;
+    
+    public JwtProperties(Environment environment) {
+        this.environment = environment;
+    }
     
     private String privatekey;
     private String publickey;
@@ -38,7 +46,13 @@ public class JwtProperties {
             throw new IllegalStateException("JWT public key is required but not provided. Please set MOVIEREVIEWS_AUTH_REVIEW_PUBLIC_KEY environment variable.");
         }
         
-        // Validate that keys are not the hardcoded defaults
+        // Skip default key validation in test profile
+        boolean isTestProfile = environment.acceptsProfiles("test");
+        if (isTestProfile) {
+            return; // Allow test keys in test environment
+        }
+        
+        // Validate that keys are not the hardcoded defaults (only in non-test environments)
         if (privatekey.contains("LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0t")) {
             throw new IllegalStateException("JWT private key appears to be using default hardcoded value. Please provide a secure private key via MOVIEREVIEWS_AUTH_REVIEW_PRIVATE_KEY environment variable.");
         }

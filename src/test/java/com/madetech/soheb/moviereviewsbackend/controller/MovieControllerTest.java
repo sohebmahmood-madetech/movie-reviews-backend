@@ -1,6 +1,7 @@
 package com.madetech.soheb.moviereviewsbackend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.madetech.soheb.moviereviewsbackend.config.TestSecurityConfig;
 import com.madetech.soheb.moviereviewsbackend.data.AgeRating;
 import com.madetech.soheb.moviereviewsbackend.data.database.Movie;
 import com.madetech.soheb.moviereviewsbackend.data.database.Review;
@@ -16,8 +17,15 @@ import org.junit.jupiter.api.Timeout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -31,7 +39,22 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(value = MovieController.class, excludeAutoConfiguration = {org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class})
+@WebMvcTest(
+        controllers = MovieController.class,
+        excludeFilters = @ComponentScan.Filter(
+                type = FilterType.ASSIGNABLE_TYPE, 
+                classes = {
+                        com.madetech.soheb.moviereviewsbackend.config.SecurityConfig.class,
+                        com.madetech.soheb.moviereviewsbackend.config.JwtProperties.class,
+                        com.madetech.soheb.moviereviewsbackend.config.JwtAuthenticationFilter.class,
+                        com.madetech.soheb.moviereviewsbackend.config.FilmTokenAuthenticationFilter.class,
+                        com.madetech.soheb.moviereviewsbackend.config.RateLimitFilter.class,
+                        com.madetech.soheb.moviereviewsbackend.config.SecurityHeadersFilter.class
+                }
+        )
+)
+@Import(TestSecurityConfig.class)
+@ActiveProfiles("test")
 class MovieControllerTest {
 
     @Autowired
@@ -51,6 +74,7 @@ class MovieControllerTest {
 
     @Test
     @Timeout(5)
+    @WithMockUser
     void submitMovie_ValidRequestAndToken_ReturnsOk() throws Exception {
         MovieSubmissionRequest request = new MovieSubmissionRequest();
         request.setName("Test Movie");
@@ -72,12 +96,14 @@ class MovieControllerTest {
         mockMvc.perform(post("/v1/movies/submit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
-                        .header("X-API-AUTH", "validtoken"))
+                        .header("X-API-AUTH", "validtoken")
+                        .with(csrf()))
                 .andExpect(status().isOk());
     }
 
     @Test
     @Timeout(5)
+    @WithMockUser
     void submitMovie_InvalidToken_ReturnsUnauthorized() throws Exception {
         MovieSubmissionRequest request = new MovieSubmissionRequest();
         request.setName("Test Movie");
@@ -94,12 +120,14 @@ class MovieControllerTest {
         mockMvc.perform(post("/v1/movies/submit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
-                        .header("X-API-AUTH", "invalidtoken"))
+                        .header("X-API-AUTH", "invalidtoken")
+                        .with(csrf()))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     @Timeout(5)
+    @WithMockUser
     void submitMovie_InvalidRequest_ReturnsBadRequest() throws Exception {
         MovieSubmissionRequest request = new MovieSubmissionRequest();
         request.setName("");
@@ -114,12 +142,14 @@ class MovieControllerTest {
         mockMvc.perform(post("/v1/movies/submit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
-                        .header("X-API-AUTH", "validtoken"))
+                        .header("X-API-AUTH", "validtoken")
+                        .with(csrf()))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     @Timeout(5)
+    @WithMockUser
     void getAllMovies_ReturnsMovieList() throws Exception {
         MovieWithRating movie1 = new MovieWithRating();
         movie1.setId(UUID.randomUUID());
@@ -144,6 +174,7 @@ class MovieControllerTest {
 
     @Test
     @Timeout(5)
+    @WithMockUser
     void submitReview_ValidRequestAndToken_ReturnsOk() throws Exception {
         UUID movieId = UUID.randomUUID();
         UUID userId = UUID.randomUUID();
@@ -172,12 +203,14 @@ class MovieControllerTest {
         mockMvc.perform(post("/v1/movies/" + movieId + "/review/submit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
-                        .header("X-API-AUTH", "validjwt"))
+                        .header("X-API-AUTH", "validjwt")
+                        .with(csrf()))
                 .andExpect(status().isOk());
     }
 
     @Test
     @Timeout(5)
+    @WithMockUser
     void submitReview_InvalidToken_ReturnsUnauthorized() throws Exception {
         UUID movieId = UUID.randomUUID();
         
@@ -190,12 +223,14 @@ class MovieControllerTest {
         mockMvc.perform(post("/v1/movies/" + movieId + "/review/submit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
-                        .header("X-API-AUTH", "invalidjwt"))
+                        .header("X-API-AUTH", "invalidjwt")
+                        .with(csrf()))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     @Timeout(5)
+    @WithMockUser
     void submitReview_InvalidRequest_ReturnsBadRequest() throws Exception {
         UUID movieId = UUID.randomUUID();
         UUID userId = UUID.randomUUID();
@@ -212,12 +247,14 @@ class MovieControllerTest {
         mockMvc.perform(post("/v1/movies/" + movieId + "/review/submit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
-                        .header("X-API-AUTH", "validjwt"))
+                        .header("X-API-AUTH", "validjwt")
+                        .with(csrf()))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     @Timeout(5)
+    @WithMockUser
     void getMovieReviews_ReturnsReviewList() throws Exception {
         UUID movieId = UUID.randomUUID();
         
