@@ -1,9 +1,9 @@
 package com.madetech.soheb.moviereviewsbackend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.madetech.soheb.moviereviewsbackend.data.User;
-import com.madetech.soheb.moviereviewsbackend.data.UserLoginRequest;
-import com.madetech.soheb.moviereviewsbackend.data.UserRegistrationRequest;
+import com.madetech.soheb.moviereviewsbackend.data.database.User;
+import com.madetech.soheb.moviereviewsbackend.data.controller.UserLoginRequest;
+import com.madetech.soheb.moviereviewsbackend.data.controller.UserRegistrationRequest;
 import com.madetech.soheb.moviereviewsbackend.service.AuthenticationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;

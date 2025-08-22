@@ -1,6 +1,11 @@
 package com.madetech.soheb.moviereviewsbackend.controller;
 
-import com.madetech.soheb.moviereviewsbackend.data.*;
+import com.madetech.soheb.moviereviewsbackend.data.database.Movie;
+import com.madetech.soheb.moviereviewsbackend.data.database.Review;
+import com.madetech.soheb.moviereviewsbackend.data.database.User;
+import com.madetech.soheb.moviereviewsbackend.data.controller.MovieSubmissionRequest;
+import com.madetech.soheb.moviereviewsbackend.data.controller.MovieWithRating;
+import com.madetech.soheb.moviereviewsbackend.data.controller.ReviewSubmissionRequest;
 import com.madetech.soheb.moviereviewsbackend.service.AuthenticationService;
 import com.madetech.soheb.moviereviewsbackend.service.MovieService;
 import com.madetech.soheb.moviereviewsbackend.service.ReviewService;

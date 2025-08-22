@@ -1,6 +1,10 @@
 package com.madetech.soheb.moviereviewsbackend.controller;
 
-import com.madetech.soheb.moviereviewsbackend.data.*;
+import com.madetech.soheb.moviereviewsbackend.data.database.User;
+import com.madetech.soheb.moviereviewsbackend.data.controller.ApiResponse;
+import com.madetech.soheb.moviereviewsbackend.data.controller.ApiError;
+import com.madetech.soheb.moviereviewsbackend.data.controller.UserRegistrationRequest;
+import com.madetech.soheb.moviereviewsbackend.data.controller.UserLoginRequest;
 import com.madetech.soheb.moviereviewsbackend.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

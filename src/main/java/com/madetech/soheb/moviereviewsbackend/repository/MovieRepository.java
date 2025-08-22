@@ -1,7 +1,7 @@
 package com.madetech.soheb.moviereviewsbackend.repository;
 
-import com.madetech.soheb.moviereviewsbackend.data.Movie;
-import com.madetech.soheb.moviereviewsbackend.data.MovieWithRating;
+import com.madetech.soheb.moviereviewsbackend.data.database.Movie;
+import com.madetech.soheb.moviereviewsbackend.data.controller.MovieWithRating;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface MovieRepository extends JpaRepository<Movie, UUID> {
 
     @Query("""
-        SELECT new com.madetech.soheb.moviereviewsbackend.data.MovieWithRating(
+        SELECT new com.madetech.soheb.moviereviewsbackend.data.controller.MovieWithRating(
             m.id, m.name, m.genres, m.directors, m.writers, m.cast, m.producers, 
             m.releaseYear, m.ageRating, m.createdAt, AVG(CAST(r.rating AS double))
         )

@@ -1,9 +1,10 @@
-package com.madetech.soheb.moviereviewsbackend.data;
+package com.madetech.soheb.moviereviewsbackend.data.database;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.madetech.soheb.moviereviewsbackend.data.AgeRating;
 
 import java.time.LocalDateTime;
 import java.util.List;

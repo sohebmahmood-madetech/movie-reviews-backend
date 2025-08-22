@@ -1,4 +1,4 @@
-package com.madetech.soheb.moviereviewsbackend.data;
+package com.madetech.soheb.moviereviewsbackend.data.exceptions;
 
 /**
  * Base exception class for all service layer exceptions in the Movie Review application.

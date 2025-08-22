@@ -1,7 +1,13 @@
 package com.madetech.soheb.moviereviewsbackend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.madetech.soheb.moviereviewsbackend.data.*;
+import com.madetech.soheb.moviereviewsbackend.data.AgeRating;
+import com.madetech.soheb.moviereviewsbackend.data.database.Movie;
+import com.madetech.soheb.moviereviewsbackend.data.database.Review;
+import com.madetech.soheb.moviereviewsbackend.data.database.User;
+import com.madetech.soheb.moviereviewsbackend.data.controller.MovieSubmissionRequest;
+import com.madetech.soheb.moviereviewsbackend.data.controller.MovieWithRating;
+import com.madetech.soheb.moviereviewsbackend.data.controller.ReviewSubmissionRequest;
 import com.madetech.soheb.moviereviewsbackend.service.AuthenticationService;
 import com.madetech.soheb.moviereviewsbackend.service.MovieService;
 import com.madetech.soheb.moviereviewsbackend.service.ReviewService;
@@ -150,10 +156,14 @@ class MovieControllerTest {
         user.setId(userId);
         user.setUsername("testuser");
 
+        Movie movie = new Movie();
+        movie.setId(movieId);
+        movie.setName("Test Movie");
+
         Review review = new Review();
         review.setId(UUID.randomUUID());
-        review.setMovieId(movieId);
-        review.setUserId(userId);
+        review.setMovie(movie);
+        review.setUser(user);
 
         when(authenticationService.validateJwtToken("validjwt")).thenReturn(Optional.of(user));
         when(reviewService.submitReview(eq(movieId), any(ReviewSubmissionRequest.class), eq(user)))
@@ -211,16 +221,20 @@ class MovieControllerTest {
     void getMovieReviews_ReturnsReviewList() throws Exception {
         UUID movieId = UUID.randomUUID();
         
+        Movie movie = new Movie();
+        movie.setId(movieId);
+        movie.setName("Test Movie");
+
         Review review1 = new Review();
         review1.setId(UUID.randomUUID());
-        review1.setMovieId(movieId);
+        review1.setMovie(movie);
         review1.setRating(8);
         review1.setDescription("Great movie!");
         review1.setTimestamp(LocalDateTime.now());
         
         Review review2 = new Review();
         review2.setId(UUID.randomUUID());
-        review2.setMovieId(movieId);
+        review2.setMovie(movie);
         review2.setRating(6);
         review2.setDescription("Ok movie");
         review2.setTimestamp(LocalDateTime.now());

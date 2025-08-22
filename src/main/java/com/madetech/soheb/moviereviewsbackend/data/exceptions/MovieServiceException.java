@@ -1,4 +1,4 @@
-package com.madetech.soheb.moviereviewsbackend.data;
+package com.madetech.soheb.moviereviewsbackend.data.exceptions;
 
 /**
  * Exception thrown when movie-related operations fail.

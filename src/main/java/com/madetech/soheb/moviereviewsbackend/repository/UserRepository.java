@@ -1,6 +1,6 @@
 package com.madetech.soheb.moviereviewsbackend.repository;
 
-import com.madetech.soheb.moviereviewsbackend.data.User;
+import com.madetech.soheb.moviereviewsbackend.data.database.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

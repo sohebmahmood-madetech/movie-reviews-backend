@@ -1,10 +1,10 @@
 package com.madetech.soheb.moviereviewsbackend.service;
 
 import com.github.f4b6a3.uuid.UuidCreator;
-import com.madetech.soheb.moviereviewsbackend.data.Review;
-import com.madetech.soheb.moviereviewsbackend.data.ReviewServiceException;
-import com.madetech.soheb.moviereviewsbackend.data.ReviewSubmissionRequest;
-import com.madetech.soheb.moviereviewsbackend.data.User;
+import com.madetech.soheb.moviereviewsbackend.data.database.Review;
+import com.madetech.soheb.moviereviewsbackend.data.exceptions.ReviewServiceException;
+import com.madetech.soheb.moviereviewsbackend.data.controller.ReviewSubmissionRequest;
+import com.madetech.soheb.moviereviewsbackend.data.database.User;
 import com.madetech.soheb.moviereviewsbackend.repository.ReviewRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class ReviewService {
                     }
 
                     // Get the movie entity for proper relationship
-                    Optional<com.madetech.soheb.moviereviewsbackend.data.Movie> movieOpt = movieService.findMovieById(movieId);
+                    Optional<com.madetech.soheb.moviereviewsbackend.data.database.Movie> movieOpt = movieService.findMovieById(movieId);
                     if (movieOpt.isEmpty()) {
                         return Optional.<Review>empty();
                     }

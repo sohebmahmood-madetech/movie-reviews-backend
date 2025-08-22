@@ -1,8 +1,9 @@
 package com.madetech.soheb.moviereviewsbackend.service;
 
-import com.madetech.soheb.moviereviewsbackend.data.Review;
-import com.madetech.soheb.moviereviewsbackend.data.ReviewSubmissionRequest;
-import com.madetech.soheb.moviereviewsbackend.data.User;
+import com.madetech.soheb.moviereviewsbackend.data.database.Movie;
+import com.madetech.soheb.moviereviewsbackend.data.database.Review;
+import com.madetech.soheb.moviereviewsbackend.data.controller.ReviewSubmissionRequest;
+import com.madetech.soheb.moviereviewsbackend.data.database.User;
 import com.madetech.soheb.moviereviewsbackend.repository.ReviewRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -113,15 +114,19 @@ class ReviewServiceTest {
     void getReviewsForMovie_ExistingMovie_ReturnsReviews() {
         UUID movieId = UUID.randomUUID();
         
+        Movie movie = new Movie();
+        movie.setId(movieId);
+        movie.setName("Test Movie");
+
         Review review1 = new Review();
         review1.setId(UUID.randomUUID());
-        review1.setMovieId(movieId);
+        review1.setMovie(movie);
         review1.setRating(8);
         review1.setTimestamp(LocalDateTime.now());
         
         Review review2 = new Review();
         review2.setId(UUID.randomUUID());
-        review2.setMovieId(movieId);
+        review2.setMovie(movie);
         review2.setRating(6);
         review2.setTimestamp(LocalDateTime.now());
 
@@ -156,15 +161,19 @@ class ReviewServiceTest {
     void getReviewsByUser_ReturnsUserReviews() {
         UUID userId = UUID.randomUUID();
         
+        User user = new User();
+        user.setId(userId);
+        user.setUsername("testuser");
+
         Review review1 = new Review();
         review1.setId(UUID.randomUUID());
-        review1.setUserId(userId);
+        review1.setUser(user);
         review1.setRating(9);
         review1.setTimestamp(LocalDateTime.now());
         
         Review review2 = new Review();
         review2.setId(UUID.randomUUID());
-        review2.setUserId(userId);
+        review2.setUser(user);
         review2.setRating(7);
         review2.setTimestamp(LocalDateTime.now());
 

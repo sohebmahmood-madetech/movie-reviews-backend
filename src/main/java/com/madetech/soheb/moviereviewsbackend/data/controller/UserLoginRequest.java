@@ -1,4 +1,4 @@
-package com.madetech.soheb.moviereviewsbackend.data;
+package com.madetech.soheb.moviereviewsbackend.data.controller;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,10 @@
 package com.madetech.soheb.moviereviewsbackend.service;
 
-import com.madetech.soheb.moviereviewsbackend.data.*;
+import com.madetech.soheb.moviereviewsbackend.data.AgeRating;
+import com.madetech.soheb.moviereviewsbackend.data.database.Movie;
+import com.madetech.soheb.moviereviewsbackend.data.controller.MovieSubmissionRequest;
+import com.madetech.soheb.moviereviewsbackend.data.controller.MovieWithRating;
+import com.madetech.soheb.moviereviewsbackend.data.exceptions.MovieServiceException;
 import com.madetech.soheb.moviereviewsbackend.repository.MovieRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

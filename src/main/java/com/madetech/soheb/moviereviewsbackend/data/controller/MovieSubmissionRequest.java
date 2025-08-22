@@ -1,9 +1,10 @@
-package com.madetech.soheb.moviereviewsbackend.data;
+package com.madetech.soheb.moviereviewsbackend.data.controller;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.madetech.soheb.moviereviewsbackend.data.AgeRating;
 
 import java.util.List;
 import java.util.Objects;

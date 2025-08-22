@@ -1,6 +1,6 @@
 package com.madetech.soheb.moviereviewsbackend.repository;
 
-import com.madetech.soheb.moviereviewsbackend.data.Review;
+import com.madetech.soheb.moviereviewsbackend.data.database.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

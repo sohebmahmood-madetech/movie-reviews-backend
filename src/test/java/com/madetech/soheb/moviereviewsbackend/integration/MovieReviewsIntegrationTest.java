@@ -1,7 +1,13 @@
 package com.madetech.soheb.moviereviewsbackend.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.madetech.soheb.moviereviewsbackend.data.*;
+import com.madetech.soheb.moviereviewsbackend.data.AgeRating;
+import com.madetech.soheb.moviereviewsbackend.data.controller.ApiResponse;
+import com.madetech.soheb.moviereviewsbackend.data.controller.MovieSubmissionRequest;
+import com.madetech.soheb.moviereviewsbackend.data.controller.MovieWithRating;
+import com.madetech.soheb.moviereviewsbackend.data.controller.ReviewSubmissionRequest;
+import com.madetech.soheb.moviereviewsbackend.data.controller.UserLoginRequest;
+import com.madetech.soheb.moviereviewsbackend.data.controller.UserRegistrationRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.springframework.beans.factory.annotation.Autowired;

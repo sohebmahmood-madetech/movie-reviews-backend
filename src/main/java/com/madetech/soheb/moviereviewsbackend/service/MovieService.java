@@ -1,10 +1,10 @@
 package com.madetech.soheb.moviereviewsbackend.service;
 
 import com.github.f4b6a3.uuid.UuidCreator;
-import com.madetech.soheb.moviereviewsbackend.data.Movie;
-import com.madetech.soheb.moviereviewsbackend.data.MovieServiceException;
-import com.madetech.soheb.moviereviewsbackend.data.MovieSubmissionRequest;
-import com.madetech.soheb.moviereviewsbackend.data.MovieWithRating;
+import com.madetech.soheb.moviereviewsbackend.data.database.Movie;
+import com.madetech.soheb.moviereviewsbackend.data.exceptions.MovieServiceException;
+import com.madetech.soheb.moviereviewsbackend.data.controller.MovieSubmissionRequest;
+import com.madetech.soheb.moviereviewsbackend.data.controller.MovieWithRating;
 import com.madetech.soheb.moviereviewsbackend.repository.MovieRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
