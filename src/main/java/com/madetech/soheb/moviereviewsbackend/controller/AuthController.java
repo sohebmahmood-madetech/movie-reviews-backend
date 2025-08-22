@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Slf4j
@@ -33,7 +32,7 @@ public class AuthController {
         try {
             if (bindingResult.hasErrors()) {
                 return ResponseEntity.badRequest().body(
-                    ApiResponse.failure(new ApiError(1001L, "Invalid registration data provided", LocalDateTime.now()))
+                    ApiResponse.failure(new ApiError(1001L, "Invalid registration data provided"))
                 );
             }
 
@@ -41,7 +40,7 @@ public class AuthController {
             
             if (userOpt.isEmpty()) {
                 return ResponseEntity.badRequest().body(
-                    ApiResponse.failure(new ApiError(1002L, "Username or email already exists", LocalDateTime.now()))
+                    ApiResponse.failure(new ApiError(1002L, "Username or email already exists"))
                 );
             }
 
@@ -51,7 +50,7 @@ public class AuthController {
         } catch (RuntimeException e) {
             log.error("Signup failed", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                ApiResponse.failure(new ApiError(1003L, "Registration process encountered an error", LocalDateTime.now()))
+                ApiResponse.failure(new ApiError(1003L, "Registration process encountered an error"))
             );
         }
     }
@@ -62,7 +61,7 @@ public class AuthController {
         try {
             if (bindingResult.hasErrors()) {
                 return ResponseEntity.badRequest().body(
-                    ApiResponse.failure(new ApiError(1004L, "Invalid login data provided", LocalDateTime.now()))
+                    ApiResponse.failure(new ApiError(1004L, "Invalid login data provided"))
                 );
             }
 
@@ -70,7 +69,7 @@ public class AuthController {
             
             if (userOpt.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    ApiResponse.failure(new ApiError(1005L, "Invalid credentials or account access restricted", LocalDateTime.now()))
+                    ApiResponse.failure(new ApiError(1005L, "Invalid credentials or account access restricted"))
                 );
             }
 
@@ -80,7 +79,7 @@ public class AuthController {
         } catch (RuntimeException e) {
             log.error("Login failed", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                ApiResponse.failure(new ApiError(1006L, "Authentication process encountered an error", LocalDateTime.now()))
+                ApiResponse.failure(new ApiError(1006L, "Authentication process encountered an error"))
             );
         }
     }

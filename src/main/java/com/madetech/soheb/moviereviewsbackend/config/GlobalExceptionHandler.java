@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -227,7 +226,7 @@ public class GlobalExceptionHandler {
     }
     
     private ApiResponse<Object> createErrorResponse(long errorCode, String message) {
-        ApiError error = new ApiError(errorCode, message, LocalDateTime.now());
+        ApiError error = new ApiError(errorCode, message);
         return ApiResponse.failure(error);
     }
 }
