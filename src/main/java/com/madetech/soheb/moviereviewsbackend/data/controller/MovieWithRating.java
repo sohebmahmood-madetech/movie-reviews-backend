@@ -1,6 +1,5 @@
 package com.madetech.soheb.moviereviewsbackend.data.controller;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.madetech.soheb.moviereviewsbackend.data.AgeRating;
@@ -12,7 +11,6 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class MovieWithRating {
     private UUID id;
     private String name;
@@ -25,6 +23,31 @@ public class MovieWithRating {
     private AgeRating ageRating;
     private LocalDateTime createdAt;
     private Double averageRating;
+
+    public MovieWithRating(UUID id, String name, List<String> genres, List<String> directors, 
+                          List<String> writers, List<String> cast, List<String> producers, 
+                          Integer releaseYear, AgeRating ageRating, LocalDateTime createdAt, 
+                          Double averageRating) {
+        this.id = id;
+        this.name = name;
+        this.genres = genres;
+        this.directors = directors;
+        this.writers = writers;
+        this.cast = cast;
+        this.producers = producers;
+        this.releaseYear = releaseYear;
+        this.ageRating = ageRating;
+        this.createdAt = createdAt;
+        this.averageRating = averageRating;
+    }
+
+    public MovieWithRating(UUID id, String name, List<String> genres, List<String> directors, 
+                          List<String> writers, List<String> cast, List<String> producers, 
+                          Integer releaseYear, AgeRating ageRating, LocalDateTime createdAt, 
+                          Object averageRating) {
+        this(id, name, genres, directors, writers, cast, producers, releaseYear, ageRating, createdAt, 
+             averageRating == null ? null : ((Number) averageRating).doubleValue());
+    }
 
     @Override
     public boolean equals(Object o) {

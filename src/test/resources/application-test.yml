@@ -1,0 +1,34 @@
+moviereviews:
+  auth:
+    review:
+      # Different test RSA keys that don't match the hardcoded rejection patterns
+      # Private key for signing JWT tokens in tests
+      privatekey: dGVzdC1wcml2YXRlLWtleS1mb3ItdGVzdGluZy1wdXJwb3Nlcy1vbmx5LXRoaXMtaXMtYS1kdW1teS1rZXktZm9yLXVuaXQtdGVzdHMtdG8tcGFzcw==
+      # Public key for verifying JWT tokens in tests  
+      publickey: dGVzdC1wdWJsaWMta2V5LWZvci10ZXN0aW5nLXB1cnBvc2VzLW9ubHktdGhpcy1pcy1hLWR1bW15LWtleS1mb3ItdW5pdC10ZXN0cy10by1wYXNz
+
+# Override other properties for tests
+spring:
+
+# Test-specific database configuration
+  datasource:
+    # Use in-memory H2 for fast tests
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    database-platform: org.hibernate.dialect.H2Dialect
+
+# Disable liquibase for tests since we use create-drop
+  liquibase:
+    enabled: false
+
+logging:
+  level:
+    com.madetech.soheb.moviereviewsbackend: DEBUG
+    org.springframework.security: DEBUG
