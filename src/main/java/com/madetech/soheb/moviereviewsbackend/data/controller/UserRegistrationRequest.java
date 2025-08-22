@@ -1,5 +1,7 @@
 package com.madetech.soheb.moviereviewsbackend.data.controller;
 
+import com.madetech.soheb.moviereviewsbackend.data.controller.validation.StrongPassword;
+import com.madetech.soheb.moviereviewsbackend.data.controller.validation.ValidAge;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,9 +25,11 @@ public class UserRegistrationRequest {
 
     @NotBlank
     @Size(max = 256)
+    @StrongPassword
     private String password;
 
     @NotNull
+    @ValidAge
     private LocalDate dateOfBirth;
 
     @Override

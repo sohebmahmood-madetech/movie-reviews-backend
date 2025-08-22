@@ -1,5 +1,6 @@
 package com.madetech.soheb.moviereviewsbackend.data.controller;
 
+import com.madetech.soheb.moviereviewsbackend.data.controller.validation.SafeText;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class ReviewSubmissionRequest {
 
     @NotBlank
     @Size(max = 500)
+    @SafeText
     private String description;
 
     @Override
