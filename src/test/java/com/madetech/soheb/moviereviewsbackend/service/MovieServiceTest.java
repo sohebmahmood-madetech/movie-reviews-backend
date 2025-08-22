@@ -64,36 +64,53 @@ class MovieServiceTest {
     @Test
     @Timeout(5)
     void getAllMoviesWithRating_ReturnsMovieList() {
-        MovieWithRating movie1 = new MovieWithRating();
+        Movie movie1 = new Movie();
         movie1.setId(UUID.randomUUID());
         movie1.setName("Movie 1");
-        movie1.setAverageRating(8.5);
+        movie1.setGenres(List.of("Action"));
+        movie1.setDirectors(List.of("Director 1"));
+        movie1.setWriters(List.of("Writer 1"));
+        movie1.setCast(List.of("Actor 1"));
+        movie1.setProducers(List.of("Producer 1"));
+        movie1.setReleaseYear(2023);
+        movie1.setAgeRating(AgeRating.BBFC_15);
+        movie1.setCreatedAt(LocalDateTime.now());
 
-        MovieWithRating movie2 = new MovieWithRating();
+        Movie movie2 = new Movie();
         movie2.setId(UUID.randomUUID());
         movie2.setName("Movie 2");
-        movie2.setAverageRating(7.2);
+        movie2.setGenres(List.of("Drama"));
+        movie2.setDirectors(List.of("Director 2"));
+        movie2.setWriters(List.of("Writer 2"));
+        movie2.setCast(List.of("Actor 2"));
+        movie2.setProducers(List.of("Producer 2"));
+        movie2.setReleaseYear(2022);
+        movie2.setAgeRating(AgeRating.BBFC_12);
+        movie2.setCreatedAt(LocalDateTime.now());
 
-        List<MovieWithRating> movies = Arrays.asList(movie1, movie2);
-        when(movieRepository.findAllWithAverageRating()).thenReturn(movies);
+        List<Object[]> movieResults = Arrays.asList(
+                new Object[]{movie1, 8.5},
+                new Object[]{movie2, 7.2}
+        );
+        when(movieRepository.findAllMoviesWithAverageRating()).thenReturn(movieResults);
 
         List<MovieWithRating> result = movieService.getAllMoviesWithRating();
 
         assertEquals(2, result.size());
         assertEquals("Movie 1", result.get(0).getName());
         assertEquals(8.5, result.get(0).getAverageRating());
-        verify(movieRepository).findAllWithAverageRating();
+        verify(movieRepository).findAllMoviesWithAverageRating();
     }
 
     @Test
     @Timeout(5)
     void getAllMoviesWithRating_EmptyList_ReturnsEmptyList() {
-        when(movieRepository.findAllWithAverageRating()).thenReturn(List.of());
+        when(movieRepository.findAllMoviesWithAverageRating()).thenReturn(List.of());
 
         List<MovieWithRating> result = movieService.getAllMoviesWithRating();
 
         assertTrue(result.isEmpty());
-        verify(movieRepository).findAllWithAverageRating();
+        verify(movieRepository).findAllMoviesWithAverageRating();
     }
 
     @Test

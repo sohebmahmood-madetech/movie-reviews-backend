@@ -10,9 +10,9 @@ import java.util.UUID;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, UUID> {
 
-    List<Review> findByMovieIdOrderByTimestampDesc(UUID movieId);
+    List<Review> findByMovie_IdOrderByTimestampDesc(UUID movieId);
 
-    List<Review> findByUserIdOrderByTimestampDesc(UUID userId);
+    List<Review> findByUser_IdOrderByTimestampDesc(UUID userId);
 
-    boolean existsByUserIdAndMovieId(UUID userId, UUID movieId);
+    boolean existsByUser_IdAndMovie_Id(UUID userId, UUID movieId);
 }

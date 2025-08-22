@@ -48,8 +48,32 @@ public class MovieService {
 
     public List<MovieWithRating> getAllMoviesWithRating() {
         return executeWithErrorHandling(
-                () -> movieRepository.findAllWithAverageRating(),
+                () -> {
+                    List<Object[]> results = movieRepository.findAllMoviesWithAverageRating();
+                    return results.stream()
+                            .map(this::convertToMovieWithRating)
+                            .toList();
+                },
                 "ERR_MOVIES_RETRIEVAL_FAILED: Failed to retrieve movies"
+        );
+    }
+
+    private MovieWithRating convertToMovieWithRating(Object[] result) {
+        Movie movie = (Movie) result[0];
+        Double averageRating = result[1] != null ? ((Number) result[1]).doubleValue() : null;
+        
+        return new MovieWithRating(
+                movie.getId(),
+                movie.getName(),
+                movie.getGenres(),
+                movie.getDirectors(),
+                movie.getWriters(),
+                movie.getCast(),
+                movie.getProducers(),
+                movie.getReleaseYear(),
+                movie.getAgeRating(),
+                movie.getCreatedAt(),
+                averageRating
         );
     }
 

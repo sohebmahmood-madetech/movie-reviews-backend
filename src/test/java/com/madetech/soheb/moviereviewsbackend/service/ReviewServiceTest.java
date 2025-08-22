@@ -59,7 +59,7 @@ class ReviewServiceTest {
 
         when(movieService.movieExists(movieId)).thenReturn(true);
         when(movieService.findMovieById(movieId)).thenReturn(Optional.of(movie));
-        when(reviewRepository.existsByUserIdAndMovieId(userId, movieId)).thenReturn(false);
+        when(reviewRepository.existsByUser_IdAndMovie_Id(userId, movieId)).thenReturn(false);
         when(reviewRepository.save(any(Review.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Optional<Review> result = reviewService.submitReview(movieId, request, user);
@@ -107,7 +107,7 @@ class ReviewServiceTest {
         request.setDescription("Great movie!");
 
         when(movieService.movieExists(movieId)).thenReturn(true);
-        when(reviewRepository.existsByUserIdAndMovieId(userId, movieId)).thenReturn(true);
+        when(reviewRepository.existsByUser_IdAndMovie_Id(userId, movieId)).thenReturn(true);
 
         Optional<Review> result = reviewService.submitReview(movieId, request, user);
 
@@ -139,14 +139,14 @@ class ReviewServiceTest {
         List<Review> reviews = Arrays.asList(review1, review2);
 
         when(movieService.movieExists(movieId)).thenReturn(true);
-        when(reviewRepository.findByMovieIdOrderByTimestampDesc(movieId)).thenReturn(reviews);
+        when(reviewRepository.findByMovie_IdOrderByTimestampDesc(movieId)).thenReturn(reviews);
 
         List<Review> result = reviewService.getReviewsForMovie(movieId);
 
         assertEquals(2, result.size());
         assertEquals(8, result.get(0).getRating());
         assertEquals(6, result.get(1).getRating());
-        verify(reviewRepository).findByMovieIdOrderByTimestampDesc(movieId);
+        verify(reviewRepository).findByMovie_IdOrderByTimestampDesc(movieId);
     }
 
     @Test
@@ -159,7 +159,7 @@ class ReviewServiceTest {
         List<Review> result = reviewService.getReviewsForMovie(movieId);
 
         assertTrue(result.isEmpty());
-        verify(reviewRepository, never()).findByMovieIdOrderByTimestampDesc(movieId);
+        verify(reviewRepository, never()).findByMovie_IdOrderByTimestampDesc(movieId);
     }
 
     @Test
@@ -184,14 +184,14 @@ class ReviewServiceTest {
         review2.setTimestamp(LocalDateTime.now());
 
         List<Review> reviews = Arrays.asList(review1, review2);
-        when(reviewRepository.findByUserIdOrderByTimestampDesc(userId)).thenReturn(reviews);
+        when(reviewRepository.findByUser_IdOrderByTimestampDesc(userId)).thenReturn(reviews);
 
         List<Review> result = reviewService.getReviewsByUser(userId);
 
         assertEquals(2, result.size());
         assertEquals(9, result.get(0).getRating());
         assertEquals(7, result.get(1).getRating());
-        verify(reviewRepository).findByUserIdOrderByTimestampDesc(userId);
+        verify(reviewRepository).findByUser_IdOrderByTimestampDesc(userId);
     }
 
     @Test
@@ -213,7 +213,7 @@ class ReviewServiceTest {
 
         when(movieService.movieExists(movieId)).thenReturn(true);
         when(movieService.findMovieById(movieId)).thenReturn(Optional.of(movie));
-        when(reviewRepository.existsByUserIdAndMovieId(userId, movieId)).thenReturn(false);
+        when(reviewRepository.existsByUser_IdAndMovie_Id(userId, movieId)).thenReturn(false);
         when(reviewRepository.save(any(Review.class))).thenThrow(new RuntimeException("Database error"));
 
         ReviewServiceException exception = 

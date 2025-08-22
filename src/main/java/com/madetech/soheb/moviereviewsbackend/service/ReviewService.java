@@ -35,7 +35,7 @@ public class ReviewService {
                         return Optional.<Review>empty();
                     }
 
-                    if (reviewRepository.existsByUserIdAndMovieId(user.getId(), movieId)) {
+                    if (reviewRepository.existsByUser_IdAndMovie_Id(user.getId(), movieId)) {
                         return Optional.<Review>empty();
                     }
 
@@ -65,7 +65,7 @@ public class ReviewService {
                     if (!movieService.movieExists(movieId)) {
                         return List.<Review>of();
                     }
-                    return reviewRepository.findByMovieIdOrderByTimestampDesc(movieId);
+                    return reviewRepository.findByMovie_IdOrderByTimestampDesc(movieId);
                 },
                 "ERR_REVIEWS_RETRIEVAL_FAILED: Failed to retrieve reviews for movie"
         );
@@ -73,7 +73,7 @@ public class ReviewService {
 
     public List<Review> getReviewsByUser(UUID userId) {
         return executeWithErrorHandling(
-                () -> reviewRepository.findByUserIdOrderByTimestampDesc(userId),
+                () -> reviewRepository.findByUser_IdOrderByTimestampDesc(userId),
                 "ERR_USER_REVIEWS_RETRIEVAL_FAILED: Failed to retrieve reviews by user"
         );
     }

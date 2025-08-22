@@ -13,14 +13,10 @@ import java.util.UUID;
 public interface MovieRepository extends JpaRepository<Movie, UUID> {
 
     @Query("""
-        SELECT new com.madetech.soheb.moviereviewsbackend.data.controller.MovieWithRating(
-            m.id, m.name, m.genres, m.directors, m.writers, m.cast, m.producers, 
-            m.releaseYear, m.ageRating, m.createdAt, AVG(CAST(r.rating AS double))
-        )
+        SELECT m, AVG(CAST(r.rating AS double))
         FROM Movie m LEFT JOIN Review r ON m.id = r.movie.id
-        GROUP BY m.id, m.name, m.genres, m.directors, m.writers, m.cast, m.producers, 
-                 m.releaseYear, m.ageRating, m.createdAt
+        GROUP BY m.id
         ORDER BY m.createdAt DESC
         """)
-    List<MovieWithRating> findAllWithAverageRating();
+    List<Object[]> findAllMoviesWithAverageRating();
 }
