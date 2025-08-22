@@ -15,15 +15,21 @@ import com.madetech.soheb.moviereviewsbackend.data.database.Movie;
 import com.madetech.soheb.moviereviewsbackend.data.database.Review;
 import com.madetech.soheb.moviereviewsbackend.data.database.User;
 import com.madetech.soheb.moviereviewsbackend.service.AuthenticationService;
+import com.madetech.soheb.moviereviewsbackend.service.FilmTokenAuthenticationService;
 import com.madetech.soheb.moviereviewsbackend.service.MovieService;
 import com.madetech.soheb.moviereviewsbackend.service.ReviewService;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -50,13 +56,13 @@ class MovieReviewsIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
     
-    @MockBean
+    @MockitoBean
     private AuthenticationService authenticationService;
     
-    @MockBean 
+    @MockitoBean
     private MovieService movieService;
     
-    @MockBean
+    @MockitoBean
     private ReviewService reviewService;
 
     @Test
@@ -213,7 +219,7 @@ class MovieReviewsIntegrationTest {
         UserRegistrationRequest request = new UserRegistrationRequest();
         request.setUsername("testuser");
         request.setEmail("test@example.com");
-        request.setPassword("Password123!");  // Meets strong password requirements
+        request.setPassword("7g:T,um]_d\"dRlO9");  // Meets strong password requirements
         request.setDateOfBirth(LocalDate.of(1990, 1, 1));  // User will be 35 years old, meets age requirement
         return request;
     }
@@ -221,7 +227,7 @@ class MovieReviewsIntegrationTest {
     private UserLoginRequest createUserLoginRequest() {
         UserLoginRequest request = new UserLoginRequest();
         request.setUsernameOrEmail("testuser");
-        request.setPassword("Password123!");
+        request.setPassword("7g:T,um]_d\"dRlO9");
         return request;
     }
     
