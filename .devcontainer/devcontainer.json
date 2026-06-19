@@ -9,6 +9,11 @@
       "enableNonRootDocker": "true",
       "moby": "true"
     },
+    "ghcr.io/devcontainers/features/java:1": {
+        "version": "none",
+        "installGradle": "false",
+        "installMaven": "true"
+    },
     "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
   },
   "customizations": {
