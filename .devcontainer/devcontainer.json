@@ -6,9 +6,6 @@
       "version": "latest",
       "enableNonRootDocker": "true",
       "moby": "true"
-    },
-    "ghcr.io/devcontainers/features/maven:1": {
-      "version": "latest"
     }
   },
   "customizations": {
