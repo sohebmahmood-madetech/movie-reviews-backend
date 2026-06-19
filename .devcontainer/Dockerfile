@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/devcontainers/java:1-21-bookworm
 
 # Switch to the vscode user to use SDKMAN (it's installed in the user's home directory)
-USER vscode
+USER coder
 
 # Install Java 25 using SDKMAN and set it as the default.
 # We are using '25-open' for OpenJDK. 
