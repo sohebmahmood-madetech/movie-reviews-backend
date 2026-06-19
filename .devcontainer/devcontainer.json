@@ -8,7 +8,7 @@
       "moby": "true"
     },
     "ghcr.io/devcontainers/features/java:1": {
-        "version": "none",
+        "version": "25",
         "installGradle": "true",
         "installMaven": "true"
     },
