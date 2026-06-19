@@ -52,6 +52,6 @@
   "postCreateCommand": "chmod +x mvnw && ./mvnw dependency:go-offline",
   "remoteUser": "vscode",
   "mounts": [
-    "source=claude-code-config,target=/home/coder/.claude,type=volume"
+    "source=claude-code-config,target=/home/vscode/.claude,type=volume"
   ]
 }
