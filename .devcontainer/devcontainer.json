@@ -1,8 +1,6 @@
 {
   "name": "Movie Reviews Backend",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "image": "mcr.microsoft.com/devcontainers/java:25",
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
       "version": "latest",
@@ -37,7 +35,8 @@
         "co.elastic.idea.plugin.envidea",
         "Docker",
         "com.haulmont.jpabuddy"
-      ]
+      ],
+      "backend": "JetBrains"
     }
   },
   "forwardPorts": [8080],
