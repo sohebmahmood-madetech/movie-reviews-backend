@@ -9,9 +9,10 @@
     },
     "ghcr.io/devcontainers/features/java:1": {
         "version": "none",
-        "installGradle": "false",
+        "installGradle": "true",
         "installMaven": "true"
     },
+    "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
   },
   "customizations": {
@@ -47,5 +48,8 @@
     }
   },
   "postCreateCommand": "chmod +x mvnw && ./mvnw dependency:go-offline",
-  "remoteUser": "vscode"
+  "remoteUser": "vscode",
+  "mounts": [
+    "source=claude-code-config,target=/home/node/.claude,type=volume"
+  ]
 }
