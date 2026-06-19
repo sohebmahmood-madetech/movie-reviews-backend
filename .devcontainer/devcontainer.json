@@ -42,7 +42,7 @@
       "backend": "JetBrains"
     }
   },
-  "forwardPorts": [8080,32769,38723,5432],
+  "forwardPorts": [8080,32769,38723,5432,32768],
   "portsAttributes": {
     "8080": {
       "label": "Application",
