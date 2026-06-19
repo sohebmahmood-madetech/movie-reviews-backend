@@ -27,7 +27,8 @@
         "vscjava.vscode-spring-initializr",
         "vscjava.vscode-spring-boot-dashboard",
         "ms-azuretools.vscode-docker",
-        "redhat.vscode-yaml"
+        "redhat.vscode-yaml",
+        "anthropic.claude-code"
       ]
     },
     "jetbrains": {
@@ -35,7 +36,8 @@
         "com.intellij.database",
         "co.elastic.idea.plugin.envidea",
         "Docker",
-        "com.haulmont.jpabuddy"
+        "com.haulmont.jpabuddy",
+        "com.anthropic.code.plugin"
       ],
       "backend": "JetBrains"
     }
@@ -48,8 +50,8 @@
     }
   },
   "postCreateCommand": "chmod +x mvnw && ./mvnw dependency:go-offline",
-  "remoteUser": "vscode",
+  "remoteUser": "coder",
   "mounts": [
-    "source=claude-code-config,target=/home/node/.claude,type=volume"
+    "source=claude-code-config,target=/home/coder/.claude,type=volume"
   ]
 }
