@@ -48,11 +48,11 @@ public class JwtService {
                 .toInstant());
             
             return Jwts.builder()
-                .setSubject(userId.toString())
-                .setIssuedAt(issuedAt)
-                .setExpiration(expiry)
-                .signWith(privateKey, SignatureAlgorithm.RS512)
-                .compact();
+                    .subject(userId.toString())
+                    .issuedAt(issuedAt)
+                    .expiration(expiry)
+                    .signWith(privateKey, Jwts.SIG.RS512)
+                    .compact();
         } catch (Exception e) {
             logger.error("Failed to generate JWT token for user: {}", userId, e);
             throw new RuntimeException("Failed to generate JWT token", e);
@@ -99,12 +99,11 @@ public class JwtService {
     private PrivateKey loadPrivateKey() throws Exception {
         String privateKeyContent = jwtProperties.getPrivatekey();
 
-        // Remove all PEM headers, footers, and whitespace
+        // Remove PEM headers, footers, and all whitespace
         privateKeyContent = privateKeyContent
-                .replaceAll("-----BEGIN[^-]*-----", "")
-                .replaceAll("-----END[^-]*-----", "")
-                .replaceAll("\\s+", "")
-                .replaceAll("[\\r\\n]", "");
+                .replaceAll("-----BEGIN[A-Z0-9\\s]+-----", "")
+                .replaceAll("-----END[A-Z0-9\\s]+-----", "")
+                .replaceAll("\\s", "");
 
         byte[] keyBytes = Base64.getDecoder().decode(privateKeyContent);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
@@ -116,12 +115,11 @@ public class JwtService {
     private PublicKey loadPublicKey() throws Exception {
         String publicKeyContent = jwtProperties.getPublickey();
 
-        // Remove all PEM headers, footers, and whitespace
+        // Remove PEM headers, footers, and all whitespace
         publicKeyContent = publicKeyContent
-                .replaceAll("-----BEGIN[^-]*-----", "")
-                .replaceAll("-----END[^-]*-----", "")
-                .replaceAll("\\s+", "")
-                .replaceAll("[\\r\\n]", "");
+                .replaceAll("-----BEGIN[A-Z0-9\\s]+-----", "")
+                .replaceAll("-----END[A-Z0-9\\s]+-----", "")
+                .replaceAll("\\s", "");
 
         byte[] keyBytes = Base64.getDecoder().decode(publicKeyContent);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
