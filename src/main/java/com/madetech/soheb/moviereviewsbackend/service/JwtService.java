@@ -99,11 +99,11 @@ public class JwtService {
     private PrivateKey loadPrivateKey() throws Exception {
         String privateKeyContent = jwtProperties.getPrivatekey();
 
-        // Remove PEM headers, footers, and all whitespace
+        // Remove all PEM headers, footers, and whitespace
         privateKeyContent = privateKeyContent
-                .replaceAll("-----BEGIN.*?-----", "")
-                .replaceAll("-----END.*?-----", "")
-                .replaceAll("\\s", "")
+                .replaceAll("-----BEGIN[^-]*-----", "")
+                .replaceAll("-----END[^-]*-----", "")
+                .replaceAll("\\s+", "")
                 .replaceAll("[\\r\\n]", "");
 
         byte[] keyBytes = Base64.getDecoder().decode(privateKeyContent);
@@ -116,11 +116,11 @@ public class JwtService {
     private PublicKey loadPublicKey() throws Exception {
         String publicKeyContent = jwtProperties.getPublickey();
 
-        // Remove PEM headers, footers, and all whitespace
+        // Remove all PEM headers, footers, and whitespace
         publicKeyContent = publicKeyContent
-                .replaceAll("-----BEGIN.*?-----", "")
-                .replaceAll("-----END.*?-----", "")
-                .replaceAll("\\s", "")
+                .replaceAll("-----BEGIN[^-]*-----", "")
+                .replaceAll("-----END[^-]*-----", "")
+                .replaceAll("\\s+", "")
                 .replaceAll("[\\r\\n]", "");
 
         byte[] keyBytes = Base64.getDecoder().decode(publicKeyContent);
