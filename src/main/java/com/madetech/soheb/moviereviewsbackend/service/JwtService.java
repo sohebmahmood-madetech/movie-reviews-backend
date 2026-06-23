@@ -95,36 +95,38 @@ public class JwtService {
             return false;
         }
     }
-    
+
     private PrivateKey loadPrivateKey() throws Exception {
         String privateKeyContent = jwtProperties.getPrivatekey();
-        
-        // Remove PEM headers and whitespace
+
+        // Remove PEM headers, footers, and all whitespace
         privateKeyContent = privateKeyContent
-            .replace("-----BEGIN PRIVATE KEY-----", "")
-            .replace("-----END PRIVATE KEY-----", "")
-            .replaceAll("\\s", "");
-        
+                .replaceAll("-----BEGIN.*?-----", "")
+                .replaceAll("-----END.*?-----", "")
+                .replaceAll("\\s", "")
+                .replaceAll("[\\r\\n]", "");
+
         byte[] keyBytes = Base64.getDecoder().decode(privateKeyContent);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        
+
         return keyFactory.generatePrivate(keySpec);
     }
-    
+
     private PublicKey loadPublicKey() throws Exception {
         String publicKeyContent = jwtProperties.getPublickey();
-        
-        // Remove PEM headers and whitespace
+
+        // Remove PEM headers, footers, and all whitespace
         publicKeyContent = publicKeyContent
-            .replace("-----BEGIN PUBLIC KEY-----", "")
-            .replace("-----END PUBLIC KEY-----", "")
-            .replaceAll("\\s", "");
-        
+                .replaceAll("-----BEGIN.*?-----", "")
+                .replaceAll("-----END.*?-----", "")
+                .replaceAll("\\s", "")
+                .replaceAll("[\\r\\n]", "");
+
         byte[] keyBytes = Base64.getDecoder().decode(publicKeyContent);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        
+
         return keyFactory.generatePublic(keySpec);
     }
 }
