@@ -27,7 +27,8 @@
         "vscjava.vscode-spring-boot-dashboard",
         "ms-azuretools.vscode-docker",
         "redhat.vscode-yaml",
-        "anthropic.claude-code"
+        "anthropic.claude-code",
+        "GitHub.copilot"
       ]
     },
     "jetbrains": {
@@ -36,7 +37,8 @@
         "co.elastic.idea.plugin.envidea",
         "Docker",
         "com.haulmont.jpabuddy",
-        "com.anthropic.code.plugin"
+        "com.anthropic.code.plugin",
+        "com.github.copilot"
       ],
       "backend": "JetBrains"
     }
